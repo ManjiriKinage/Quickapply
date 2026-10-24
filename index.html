@@ -186,8 +186,9 @@ textarea.f{line-height:1.65}
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 let accessToken=null, resumeBase64=null, resumeMime=null, resumeName=null;
+const defaultResume='Manjiri Kinage Resume (3).pdf';
 
-window.onload=()=>{
+window.onload=async()=>{
   // Load all fields from localStorage
   lf('qa_client_id','clientId');
   lf('qa_name','yourName');
@@ -209,20 +210,40 @@ window.onload=()=>{
     localStorage.setItem('qa_subject','Application for Software Development Internships & Entry-Level Roles | Manjiri Kinage');
   }
 
-  // Load resume
+  // Load saved resume or the bundled default resume
   try{
     const r=JSON.parse(localStorage.getItem('qa_resume')||'null');
-    if(r){
-      resumeBase64=r.data;resumeMime=r.mime;resumeName=r.name;
-      document.getElementById('fileName').textContent='✓ '+r.name;
-      document.getElementById('uploadZone').classList.add('has');
-      setChip('resumeChip',true,r.name.length>22?r.name.slice(0,20)+'…':r.name);
+    if(r&&r.data&&r.mime&&r.name){
+      setResume(r.data,r.mime,r.name);
     }
-  }catch(e){}
+  }catch(e){toast('Saved resume could not be loaded',true)}
+  if(!resumeBase64)await loadDefaultResume();
 
   renderHistory();
   updateBtn();
 };
+
+function setResume(data,mime,name){
+  resumeBase64=data;resumeMime=mime;resumeName=name;
+  document.getElementById('fileName').textContent='✓ '+name;
+  document.getElementById('uploadZone').classList.add('has');
+  setChip('resumeChip',true,name.length>22?name.slice(0,20)+'…':name);
+}
+
+async function loadDefaultResume(){
+  try{
+    const response=await fetch(defaultResume);
+    if(!response.ok)throw new Error('Resume file could not be downloaded');
+    const bytes=new Uint8Array(await response.arrayBuffer());
+    let binary='';
+    for(let i=0;i<bytes.length;i+=8192){
+      binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
+    }
+    setResume(btoa(binary),'application/pdf',defaultResume);
+    try{localStorage.setItem('qa_resume',JSON.stringify({data:resumeBase64,mime:resumeMime,name:resumeName}))}
+    catch(e){toast('Default resume loaded but could not be saved locally',true)}
+  }catch(e){toast('Default resume could not be loaded',true)}
+}
 
 function defBody(n){
   return `Dear Sir/Madam,
@@ -293,9 +314,7 @@ function handleFile(input){
     resumeName=file.name;
     try{localStorage.setItem('qa_resume',JSON.stringify({data:resumeBase64,mime:resumeMime,name:resumeName}));}
     catch(e){toast('⚠️ File too large to save',true);return}
-    document.getElementById('fileName').textContent='✓ '+file.name;
-    document.getElementById('uploadZone').classList.add('has');
-    setChip('resumeChip',true,file.name.length>22?file.name.slice(0,20)+'…':file.name);
+    setResume(resumeBase64,resumeMime,resumeName);
     flash('sb-resume');toast('📎 Resume saved permanently!');
   };
   reader.readAsDataURL(file);
