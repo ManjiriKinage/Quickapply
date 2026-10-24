@@ -195,14 +195,18 @@ window.onload=()=>{
   lf('qa_body','body');
 
   // Set defaults if empty
+  if(!document.getElementById('yourName').value){
+    document.getElementById('yourName').value='Manjiri Kinage';
+    localStorage.setItem('qa_name','Manjiri Kinage');
+  }
   if(!document.getElementById('body').value){
-    const n=localStorage.getItem('qa_name')||'Your Name';
+    const n=localStorage.getItem('qa_name')||'Manjiri Kinage';
     document.getElementById('body').value=defBody(n);
     localStorage.setItem('qa_body',document.getElementById('body').value);
   }
   if(!document.getElementById('subject').value){
-    document.getElementById('subject').value='Application for the Position';
-    localStorage.setItem('qa_subject','Application for the Position');
+    document.getElementById('subject').value='Application for Software Development Internships & Entry-Level Roles | Manjiri Kinage';
+    localStorage.setItem('qa_subject','Application for Software Development Internships & Entry-Level Roles | Manjiri Kinage');
   }
 
   // Load resume
