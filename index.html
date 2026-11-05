@@ -206,8 +206,8 @@ window.onload=async()=>{
     localStorage.setItem('qa_body',document.getElementById('body').value);
   }
   if(!document.getElementById('subject').value){
-    document.getElementById('subject').value='Application for Software Development Internships & Entry-Level Roles | Manjiri Kinage';
-    localStorage.setItem('qa_subject','Application for Software Development Internships & Entry-Level Roles | Manjiri Kinage');
+    document.getElementById('subject').value='A Developer Looking to Make an Impact | Manjiri Kinage';
+    localStorage.setItem('qa_subject','A Developer Looking to Make an Impact | Manjiri Kinage');
   }
 
   // Load saved resume or the bundled default resume
@@ -246,18 +246,25 @@ async function loadDefaultResume(){
 }
 
 function defBody(n){
-  return `Dear Sir/Madam,
+  return `Dear Hiring Team,
 
-I am writing to express my strong interest in joining your team for entry-level Software Development roles or internship opportunities. I have hands-on experience building applications through hackathons and projects, with skills in Python, Flask, REST APIs, SQL, and Next.js.
+I'm Manjiri Kinage, currently pursuing my MCA(Batch-2027) and actively looking for Software Development internship or entry-level opportunities.
 
-Please find my resume attached for your consideration. I look forward to the opportunity to contribute and grow with your team.
+I enjoy turning ideas into working applications and solving real-world problems through technology. Through hands-on projects and hackathons, I've gained experience with Python, java, Flask, FastAPI, REST APIs, SQL, PostgreSQL, and Next.js.
 
-LinkedIn: https://www.linkedin.com/in/manjiri-kinage/
-Portfolio: https://portfolio-xi-black-svnsy1jr6r.vercel.app/
+I'm eager to bring my skills, curiosity, and willingness to learn to a team where I can contribute and grow as a developer.
 
-Thank you for your time.
+I'd love to be considered for any relevant opportunities at your organization.
 
-Best regards,
+Explore my work:
+- GitHub: https://github.com/ManjiriKinage
+- LinkedIn: https://www.linkedin.com/in/manjiri-kinage/
+- Portfolio: https://portfolio-xi-black-svnsy1jr6r.vercel.app/
+
+I've attached my resume for your consideration. Thank you for your time!
+
+Best regards,  
+Manjiri Kinage,
 ${n}`;
 }
 
